@@ -1,0 +1,19 @@
+digraph 01 {
+  label = "inside DirectSession::Run()"
+
+  subgraph cluster_cxx {
+    label = "C++";
+
+    subgraph cluster_direction_session_cc {
+      label = "tensorflow/core/common_runtime/direct_session.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/direct_session.cc";
+
+      00 [label="tensorflow::DirectionSession::Run()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/direct_session.cc#L431"];
+      01 [label="tensorflow::DirectionSession::GetOrCreateExecutors()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/direct_session.cc#L1035"];
+      02 [label="tensorflow::DirectionSession::CreateGraphs()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/direct_session.cc#L1255"];
+
+      00 -> 01;
+      01 -> 02;
+    }
+  }
+}

@@ -1,0 +1,91 @@
+digraph 00 {
+  label = "create tf.Session";
+
+  subgraph cluster_python {
+    label = "Python";
+
+    subgraph cluster_session_py {
+      label = "tensorflow/python/client/session.py";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/python/client/session.py";
+
+      00 [label="tf.Session.__init__()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/python/client/session.py#L1465"];
+      01 [label="tf.BaseSession.__init__()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/python/client/session.py#L558"];
+
+
+      00 -> 01;
+    }
+
+    subgraph cluster_ops_py {
+      label = "tensorflow/python/framework/ops.py";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/python/framework/ops.py";
+
+      02 [label="tf.get_default_graph()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/python/framework/ops.py#L4171"];
+
+      01 -> 02;
+    }
+  }
+
+  subgraph cluster_generated_python {
+    label = "Generated Python";
+
+    subgraph cluster_tf_session_i {
+      label = "tensorflow/python/client/tf_session.i";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/python/client/tf_session.i";
+
+      03 [label="tf_session.TF_NewSession()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/python/client/tf_session.i#L272"];
+
+      01 -> 03;
+    }
+  }
+
+  subgraph cluster_cxx {
+    label = "C++";
+
+    subgraph cluster_c_api_cc {
+      label = "tensorflow/c/c_api.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/c/c_api.cc";
+
+      04 [label="TF_NewSession()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/c/c_api.cc#L2148"];
+
+      03 -> 04;
+    }
+
+    subgraph cluster_session_cc {
+      label = "tensorflow/core/commmon_runtime/session.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/session.cc";
+
+      05 [label="tensorflow::NewSession()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/session.cc#L54"];
+
+      04 -> 05;
+    }
+
+    subgraph cluster_direction_session_cc {
+      label = "tensorflow/core/common_runtime/direct_session.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/direct_session.cc";
+
+      06 [label="tensorflow::DirectionSessionFactory::NewSession()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/direct_session.cc#L158"];
+      08 [label="tensorflow::DirectionSession::DirectSession()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/direct_session.cc#L253"];
+
+      05 -> 06;
+      06 -> 08;
+    }
+
+    subgraph cluster_device_factory_cc {
+      label = "tensorflow/core/common_runtime/device_factory.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/device_factory.cc";
+
+      07 [label=< tensorflow::DeviceFactory::AddDevices()<br/>CPU / GPU enumeration > URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/device_factory.cc#L92"];
+
+      06 -> 07;
+    }
+
+    subgraph cluster_c_api_internal_h {
+      label = "tensorflow/c/c_api_internal.h";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/c/c_api_internal.h";
+
+      09 [label="TF_Session::TF_Session()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/c/c_api_internal.h#L103"];
+
+      04 -> 09;
+    }
+  }
+}

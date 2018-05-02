@@ -1,0 +1,107 @@
+digraph 01 {
+  label = "tf.Session.run()";
+
+  subgraph cluster_python {
+    label = "Python";
+
+    subgraph cluster_session_py {
+      label = "tensorflow/python/client/session.py";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/python/client/session.py";
+
+      00 [label="tf.Sesssion.run()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/python/client/session.py#L787"];
+      01 [label="tf.BaseSession.run()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/python/client/session.py#L787"];
+      02 [label="tf.BaseSession._run()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/python/client/session.py#L1040"];
+      03 [label="tf.BaseSession._do_run()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/python/client/session.py#L1262"];
+
+      00 -> 01;
+      01 -> 02;
+      02 -> 03;
+    }
+  }
+
+  subgraph cluster_generated_python {
+    label = "Generated Python";
+
+    subgraph cluster_tf_session_i {
+      label = "tensorflow/python/client/tf_session.i";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/python/client/tf_session.i";
+
+      04 [label="tf_session.TF_Run()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/python/client/tf_session.i#L296"];
+
+      03 -> 04;
+    }
+  }
+
+  subgraph cluster_cxx {
+    label = "C++";
+
+    subgraph cluster_tf_session_helper_cc {
+      label = "tensorflow/python/client/tf_session_helper.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/python/client/tf_session_helper.cc";
+
+      05 [label="tensorflow::TF_SessionRun_wrapper()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/python/client/tf_session_helper.cc#L710"];
+      051 [label="tensorflow::TF_SessionRun_wrapper_helper()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v2/tensorflow/python/client/tf_session_helper.cc#L618"];
+
+      04 -> 05;
+      05 -> 051;
+    }
+
+    subgraph cluster_c_api_cc {
+      label = "tensorflow/c/c_api.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/c/c_api.cc";
+      
+      06 [label="TF_SessionRun()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/c/c_api.cc#L2284"];
+      061 [label="ExtendSessionGraphHelper()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/c/c_api.cc#L2248"];
+      07 [label="TF_Run_Helper()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/c/c_api.cc#L524"];
+
+      051 -> 06;
+      06 -> 061;
+      06 -> 07;
+    }
+
+    subgraph cluster_direction_session_cc {
+      label = "tensorflow/core/common_runtime/direct_session.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/direct_session.cc";
+
+      08 [label="tensorflow::DirectionSession::Run()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/direct_session.cc#L431"];
+      09 [label="tensorflow::DirectionSession::Extend()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/direct_session.cc#L376"];
+      10 [label="tensorflow::DirectionSession::ExtendLocked()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/direct_session.cc#L376"];
+      11 [label="tensorflow::DirectionSession::MaybeInitializeExecutionState()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/direct_session.cc#L332"];
+
+      07 -> 08;
+      061 -> 09;
+      09 -> 10;
+      10 -> 11;
+    }
+
+    subgraph cluster_function_cc {
+      label = "tensorflow/core/framework/function.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/framework/function.cc";
+
+      12 [label="tensorflow::FunctionLibraryDefinition::FunctionLibraryDefinition()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/framework/function.cc#L870"];
+
+      11 -> 12;
+
+      // explain this does add all the ops
+    }
+
+    subgraph cluster_simple_graph_execution_state_cc {
+      label = "tensorflow/core/common_runtime/simple_graph_execution_state.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/simple_graph_execution_state.cc";
+
+      13 [label="tensorflow::SimpleGraphExecutionState::MakeForBaseGraph()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/simple_graph_execution_state.cc#L74"];
+      14 [label="tensorflow::SimpleGraphExecutionState::InitBaseGraph()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/simple_graph_execution_state.cc#L237"];
+    
+      11 -> 13;
+      13 -> 14;
+    }
+
+    // CostModel
+
+    // PRE_PLACEMENT GraphOptimizationPass
+
+    // SimplePlacer
+
+    // POST_PLACEMENT GraphiOptimizationPass
+  }
+}
