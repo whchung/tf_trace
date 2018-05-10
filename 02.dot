@@ -15,5 +15,77 @@ digraph 01 {
       00 -> 01;
       01 -> 02;
     }
+
+    subgraph cluster_simple_graph_execution_state_cc {
+      label = "tensorflow/core/common_runtime/simple_graph_execution_state.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/simple_graph_execution_state.cc";
+
+      03 [label="tensorflow::SimpleGraphExecutionState::BuildGraph()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/simple_graph_execution_state.cc#L376"];
+      04 [label="tensorflow::SimpleGraphExecutionState::OptimizeGraph()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/simple_graph_execution_state.cc#L290"];
+
+      02 -> 03;
+      03 -> 04;
+    }
+
+    subgraph cluster_function_cc {
+      label = "tensorflow/core/framework/function.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/framework/function.cc";
+
+      05 [label="tensorflow::FunctionLibraryDefinition::FunctionLibraryDefinition()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/framework/function.cc#L878"];
+
+      03 -> 05;
+    }
+
+    subgraph cluster_optimization_registry_cc {
+      label = "tensorflow/core/common_runtime/optimization_registry.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/optimization_registry.cc";
+
+      06 [label="tensorflow::OptimizationPassRegistry::RunGrouping(POST_REWRITE_FOR_EXEC)" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/optimization_registry.cc#L47"];
+
+      03 -> 06;
+    }
+  }
+
+  subgraph cluster_XLA {
+    label = "XLA";
+
+    subgraph cluster_jit_compilation_pass_registration_cc {
+      label = "tensorflow/compiler/jit/jit_compilation_pass_registration.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/jit/jit_compilation_pass_registration.cc";
+
+      07 [label="MarkForCompilationPass" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/jit/jit_compilation_pass_registration.cc#L23"];
+      08 [label="EncapsulateSubgraphsPass" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/jit/jit_compilation_pass_registration.cc#L30"];
+      09 [label="BuildXlaLaunchOpsPass" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/jit/jit_compilation_pass_registration.cc#L34"];
+
+      06 -> 07 -> 08 -> 09;
+    }
+
+    subgraph cluster_mark_for_compilation_pass_cc {
+      label = "tensorflow/compiler/jit/mark_for_compilation_pass.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/jit/mark_for_compilation_pass.cc";
+
+      10 [label="tensorflow::MarkForCompilationPass::Run" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/jit/mark_for_compilation_pass.cc#L231"];
+
+      07 -> 10;
+    }
+
+    subgraph cluster_encapsulate_subgraph_pass_cc {
+      label = "tensorflow/compiler/jit/encapsulate_subgraphs_pass.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/jit/encapsulate_subgraphs_pass.cc";
+
+      11 [label="tensorflow::EncpasulateSubgraphsPass::Run" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/jit/encapsulate_subgraphs_pass.cc#L613"];
+
+      08 -> 11;
+    }
+
+    subgraph cluster_build_xla_launch_ops_pass_cc {
+      label = "tensorflow/compiler/jit/build_xla_launch_ops_pass.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/jit/build_xla_launch_ops_pass.cc";
+
+      12 [label="tensorflow::BuildXlaLaunchOpsPass::Run" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/jit/build_xla_launch_ops_pass.cc#L123"];
+
+      09 -> 12;
+    }
+
   }
 }
