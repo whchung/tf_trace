@@ -6,5 +6,6 @@
 - 03: how XLA clusters from are formed from a TF graph
 - 04: how UserComputation is created from XLA clusters
 - 05: how HLO module is created from UserComputation
-- 06: how HLO module is lowered into LLVM IR
-- 07: how LLVM IR are lowered to code objects
+- 06: how HLO module is optimized
+- 07: how HLO module is lowered into LLVM IR
+- 08: how LLVM IR is lowered to HSA code object

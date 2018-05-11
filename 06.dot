@@ -1,0 +1,202 @@
+digraph 06 {
+  label = "AMDGPUCompiler::Compile() HLO part";
+
+  subgraph cluster_xla {
+    label = "XLA";
+
+    subgraph cluster_amdgpu_compuiler_cc {
+      label = "tensorflow/compier/xla/service/gpu/amdgpu_compiler.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/amdgpu_compiler.cc";
+
+      00 [label="xla::gpu::AMDGPUCompiler::Compile()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/amdgpu_compiler.cc#L194"];
+      01 [label="OptimizeHloModule()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/amdgpu_compiler.cc#L122"];
+      12 [label="PrepareHloModuleForIrEmitting()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/amdgpu_compiler.cc#L159"];
+      13 [label="Create LLVM module" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/amdgpu_compiler.cc#L213"];
+      25 [label="Start LLVM IR emission" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/amdgpu_compiler.cc#L243"];
+
+      00 -> 01;
+      00 -> 12;
+      00 -> 25;
+    }
+
+    subgraph cluster_hlo_pass_pipeline_cc {
+      label = "tensorflow/compier/xla/service/hlo_pass_pipeline.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_pass_pipeline.cc";
+
+      02 [label="xla::HloPassPipeline::AddPass()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_pass_pipeline.h#L46"];
+      13 [label="xla::HloPassPipeline::AddInvariantChecker()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_pass_pipeline.h#L57"];
+
+      01 -> 02;
+      12 -> 13;
+      12 -> 02;
+    }
+
+    subgraph cluster_algebraic_simplifier_cc {
+      label = "tensorflow/compier/xla/service/algebraic_simplifier.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/algebraic_simplifier.cc";
+
+      03 [label="xla::AlgebraicSimplifier::Run()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/algebraic_simplifier.cc#L1581"];
+
+      02 -> 03;
+    }
+
+    subgraph cluster_reshape_mover_cc {
+      label = "tensorflow/compier/xla/service/reshape_mover.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/reshape_mover.cc";
+
+      04 [label="xla::ReshapeMover::Run()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/reshape_mover.cc#L313"];
+
+      02 -> 04;
+    }
+
+    subgraph cluster_hlo_constant_folding_cc {
+      label = "tensorflow/compier/xla/service/hlo_constant_folding.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_constant_folding.cc";
+
+      05 [label="xla::HloConstantFolding::Run()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_constant_folding.cc#L37"];
+
+      02 -> 05;
+    }
+
+    subgraph cluster_convolution_folding_cc {
+      label = "tensorflow/compier/xla/service/gpu/convolution_folding.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/convolution_folding.cc";
+
+      06 [label="xla::ConvolutionFolding::Run()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/convolution_folding.cc#L392"];
+
+      02 -> 06;
+    }
+
+    subgraph cluster_transpose_folding_cc {
+      label = "tensorflow/compier/xla/service/transpose_folding.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/transpose_folding.cc";
+
+      07 [label="xla::TransposeFolding::Run()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/transpose_folding.cc#L144"];
+
+      02 -> 07;
+    }
+
+    subgraph cluster_hlo_cse_cc {
+      label = "tensorflow/compier/xla/service/hlo_cse.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_cse.cc";
+
+      08 [label="xla::HloCSE::Run()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_cse.cc#L92"];
+
+      02 -> 08;
+    }
+
+    subgraph cluster_hlo_dce_cc {
+      label = "tensorflow/compier/xla/service/hlo_dce.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_dce.cc";
+
+      09 [label="xla::HloDCE::Run()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_dce.cc#L37"];
+
+      02 -> 09;
+    }
+
+    subgraph cluster_instruction_fusion_cc {
+      label = "tensorflow/compier/xla/service/instruction_fusion.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/instruction_fusion.cc";
+
+      10 [label="xla::InstructionFusion::Run()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/instruction_fusion.cc#L211"];
+
+      02 -> 10;
+    }
+
+    subgraph cluster_fusion_merger_cc {
+      label = "tensorflow/compier/xla/service/gpu/fusion_merger.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/fusion_merger.cc";
+
+      11 [label="xla::FusionMerger::Run()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/fusion_merger.cc#L293"];
+
+      02 -> 11;
+    }
+
+    subgraph cluster_hlo_verifier_cc {
+      label = "tensorflow/compier/xla/service/hlo_verifier.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_verifier.cc";
+
+      14 [label="xla::HloVerifier::Run()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_verifier.cc#L21"];
+
+      13 -> 14;
+    }
+
+    subgraph cluster_pad_insertion_cc {
+      label = "tensorflow/compier/xla/service/gpu/pad_insertion.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/pad_insertion.cc";
+
+      15 [label="xla::HloVerifier::Run()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/pad_insertion.cc#L389"];
+
+      02 -> 15;
+    }
+
+    subgraph cluster_layout_assignment_cc {
+      label = "tensorflow/compier/xla/service/layout_assignment.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/layout_assignment.cc";
+
+      16 [label="xla::LayoutAssignment::Run()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/layout_assignment.cc#L1343"];
+
+      02 -> 16;
+    }
+
+    subgraph cluster_copy_insertion_cc {
+      label = "tensorflow/compier/xla/service/copy_insertion.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/copy_insertion.cc";
+
+      17 [label="xla::LayoutAssignment::Run()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/copy_insertion.cc#L525"];
+
+      02 -> 17;
+    }
+
+    subgraph cluster_copy_insertion_cc {
+      label = "tensorflow/compier/xla/service/flatten_call_graph.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/flatten_call_graph.cc";
+
+      18 [label="xla::FlattenCallGraph::Run()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/flatten_call_graph.cc#L102"];
+
+      02 -> 18;
+    }
+
+    subgraph cluster_stream_assignment_cc {
+      label = "tensorflow/compier/xla/service/gpu/stream_assignment.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/stream_assignment.cc";
+
+      19 [label="xla::gpu::AssignStreams()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/stream_assignment.cc#L115"];
+
+      00 -> 19;
+    }
+ 
+    subgraph cluster_hlo_schedule_cc {
+      label = "tensorflow/compier/xla/service/gpu/hlo_schedule.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/hlo_schedule.cc";
+
+      20 [label="xla::gpu::HloSchedule::Build()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/hlo_schedule.cc#L189"];
+      22 [label="xla::gpu::GpuHloOrdering::GpuHloOrdering()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/hlo_schedule.cc#L55"];
+
+      00 -> 20;
+      20 -> 22;
+    }
+
+    subgraph cluster_hlo_scheduleing_cc {
+      label = "tensorflow/compier/xla/service/hlo_scheduling.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_scheduling.cc";
+
+      21 [label="xla::CreateMemoryMinimizeSequence()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_scheduling.cc#L356"];
+
+      20 -> 21;
+    }
+
+    subgraph cluster_buffer_assignment_cc {
+      label = "tensorflow/compier/xla/service/buffer_assignment.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/buffer_assignment.cc";
+
+      23 [label="xla::BufferAssigner::Run()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/buffer_assignment.cc#L584"];
+      24 [label="xla::BufferAssigner::CreateAssignment()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/buffer_assignment.cc#L1328"];
+
+      00 -> 23;
+      23 -> 24;
+    }
+
+
+  }
+}
