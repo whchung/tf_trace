@@ -19,6 +19,46 @@ digraph 06 {
       00 -> 25;
     }
 
+    subgraph cluster_stream_assignment_cc {
+      label = "tensorflow/compier/xla/service/gpu/stream_assignment.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/stream_assignment.cc";
+
+      19 [label="xla::gpu::AssignStreams()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/stream_assignment.cc#L115"];
+
+      00 -> 19;
+    }
+ 
+    subgraph cluster_hlo_schedule_cc {
+      label = "tensorflow/compier/xla/service/gpu/hlo_schedule.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/hlo_schedule.cc";
+
+      20 [label="xla::gpu::HloSchedule::Build()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/hlo_schedule.cc#L189"];
+      22 [label="xla::gpu::GpuHloOrdering::GpuHloOrdering()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/hlo_schedule.cc#L55"];
+
+      00 -> 20;
+      20 -> 22;
+    }
+
+    subgraph cluster_hlo_scheduleing_cc {
+      label = "tensorflow/compier/xla/service/hlo_scheduling.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_scheduling.cc";
+
+      21 [label="xla::CreateMemoryMinimizeSequence()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_scheduling.cc#L356"];
+
+      20 -> 21;
+    }
+
+    subgraph cluster_buffer_assignment_cc {
+      label = "tensorflow/compier/xla/service/buffer_assignment.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/buffer_assignment.cc";
+
+      23 [label="xla::BufferAssigner::Run()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/buffer_assignment.cc#L584"];
+      24 [label="xla::BufferAssigner::CreateAssignment()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/buffer_assignment.cc#L1328"];
+
+      00 -> 23;
+      23 -> 24;
+    }
+
     subgraph cluster_hlo_pass_pipeline_cc {
       label = "tensorflow/compier/xla/service/hlo_pass_pipeline.cc";
       URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_pass_pipeline.cc";
@@ -30,6 +70,10 @@ digraph 06 {
       12 -> 13;
       12 -> 02;
     }
+  }
+
+  subgraph cluster_hlo_pass {
+    label = "HLO optimization passes";
 
     subgraph cluster_algebraic_simplifier_cc {
       label = "tensorflow/compier/xla/service/algebraic_simplifier.cc";
@@ -156,47 +200,5 @@ digraph 06 {
 
       02 -> 18;
     }
-
-    subgraph cluster_stream_assignment_cc {
-      label = "tensorflow/compier/xla/service/gpu/stream_assignment.cc";
-      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/stream_assignment.cc";
-
-      19 [label="xla::gpu::AssignStreams()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/stream_assignment.cc#L115"];
-
-      00 -> 19;
-    }
- 
-    subgraph cluster_hlo_schedule_cc {
-      label = "tensorflow/compier/xla/service/gpu/hlo_schedule.cc";
-      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/hlo_schedule.cc";
-
-      20 [label="xla::gpu::HloSchedule::Build()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/hlo_schedule.cc#L189"];
-      22 [label="xla::gpu::GpuHloOrdering::GpuHloOrdering()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/hlo_schedule.cc#L55"];
-
-      00 -> 20;
-      20 -> 22;
-    }
-
-    subgraph cluster_hlo_scheduleing_cc {
-      label = "tensorflow/compier/xla/service/hlo_scheduling.cc";
-      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_scheduling.cc";
-
-      21 [label="xla::CreateMemoryMinimizeSequence()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_scheduling.cc#L356"];
-
-      20 -> 21;
-    }
-
-    subgraph cluster_buffer_assignment_cc {
-      label = "tensorflow/compier/xla/service/buffer_assignment.cc";
-      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/buffer_assignment.cc";
-
-      23 [label="xla::BufferAssigner::Run()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/buffer_assignment.cc#L584"];
-      24 [label="xla::BufferAssigner::CreateAssignment()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/buffer_assignment.cc#L1328"];
-
-      00 -> 23;
-      23 -> 24;
-    }
-
-
   }
 }
