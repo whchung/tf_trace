@@ -71,10 +71,10 @@ digraph 04 {
       label = "tensorflow/compiler/xla/client/computation_builder.cc";
       URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/client/computation_builder.cc";
 
-      12 [label="xla::ComputationBuilder::Tuple()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v2/tensorflow/compiler/xla/client/computation_builder.cc#L43"];
-      13 [label="xla::ComputationBuilder::PrepareComputation()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v2/tensorflow/compiler/xla/client/computation_builder.cc#L78"];
-      17 [label="xla::ComputationBuilder::GetTupleElement()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v2/tensorflow/compiler/xla/client/computation_builder.cc#L540"];
-      18 [label="xla::ComputationBuilder::Build()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v2/tensorflow/compiler/xla/client/computation_builder.cc#L1640"];
+      12 [label="xla::ComputationBuilder::Tuple()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/client/computation_builder.cc#L43"];
+      13 [label="xla::ComputationBuilder::PrepareComputation()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/client/computation_builder.cc#L78"];
+      17 [label="xla::ComputationBuilder::GetTupleElement()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/client/computation_builder.cc#L540"];
+      18 [label="xla::ComputationBuilder::Build()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/client/computation_builder.cc#L1640"];
 
       11 -> 12;
       12 -> 13;
@@ -86,7 +86,7 @@ digraph 04 {
       label = "tensorflow/compiler/xla/service/service.cc";
       URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/service.cc";
 
-      14 [label="xla::Service::Computation()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v2/tensorflow/compiler/xla/service/service.cc#207"];
+      14 [label="xla::Service::Computation()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/service.cc#207"];
 
       13 -> 14;
     }
@@ -95,7 +95,7 @@ digraph 04 {
       label = "tensorflow/compiler/xla/service/computation_tracker.cc";
       URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/computation_trakcer.cc";
 
-      15 [label="xla::ComputationTrakcer::NewComputation()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v2/tensorflow/compiler/xla/service/computation_tracker.cc#L38"];
+      15 [label="xla::ComputationTrakcer::NewComputation()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/computation_tracker.cc#L38"];
 
       14 -> 15;
     }
@@ -104,7 +104,7 @@ digraph 04 {
       label = "tensorflow/compiler/xla/service/user_computation.cc";
       URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/user_computation.cc";
 
-      16 [label="xla::UserComputation::UserComputation()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v2/tensorflow/compiler/xla/service/user_computation.cc#L168"];
+      16 [label="xla::UserComputation::UserComputation()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/user_computation.cc#L168"];
 
       15 -> 16;
     }

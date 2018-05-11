@@ -40,7 +40,7 @@ digraph 01 {
       URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/python/client/tf_session_helper.cc";
 
       05 [label="tensorflow::TF_SessionRun_wrapper()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/python/client/tf_session_helper.cc#L710"];
-      051 [label="tensorflow::TF_SessionRun_wrapper_helper()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v2/tensorflow/python/client/tf_session_helper.cc#L618"];
+      051 [label="tensorflow::TF_SessionRun_wrapper_helper()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/python/client/tf_session_helper.cc#L618"];
 
       04 -> 05;
       05 -> 051;
