@@ -1,0 +1,56 @@
+digraph 03 {
+  label = "XLA graph optimizations";
+
+  subgraph cluster_XLA {
+    label = "XLA";
+
+    subgraph cluster_jit_compilation_pass_registration_cc {
+      label = "tensorflow/compiler/jit/jit_compilation_pass_registration.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/jit/jit_compilation_pass_registration.cc";
+
+      00 [label="MarkForCompilationPass" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/jit/jit_compilation_pass_registration.cc#L23"];
+      01 [label="EncapsulateSubgraphsPass" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/jit/jit_compilation_pass_registration.cc#L30"];
+      02 [label="BuildXlaLaunchOpsPass" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/jit/jit_compilation_pass_registration.cc#L34"];
+
+      00 -> 01 -> 02;
+    }
+
+    subgraph cluster_mark_for_compilation_pass_cc {
+      label = "tensorflow/compiler/jit/mark_for_compilation_pass.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/jit/mark_for_compilation_pass.cc";
+
+      03 [label="tensorflow::MarkForCompilationPass::Run()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/jit/mark_for_compilation_pass.cc#L231"];
+      06 [label="tensorflow::MarkForCompilationPass::RunImpl()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/jit/mark_for_compilation_pass.cc#L287"];
+      07 [label=< Traverse graph<br/>Identify XLA-compatible nodes and form clusters (subgraphs) <br/> Annotate with _XlaCluster attribute >];
+
+      00 -> 03;
+      03 -> 06;
+      06 -> 07;
+    }
+
+    subgraph cluster_encapsulate_subgraph_pass_cc {
+      label = "tensorflow/compiler/jit/encapsulate_subgraphs_pass.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/jit/encapsulate_subgraphs_pass.cc";
+
+      04 [label="tensorflow::EncpasulateSubgraphsPass::Run()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/jit/encapsulate_subgraphs_pass.cc#L613"];
+      08 [label="tensorflow::EncapsulateSubgraphsInFunctions()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/jit/encapsulate_subgraphs_pass.cc#L557"];
+      09 [label=< Split subgraphs with _XlaCluster attribute into a functions<br/>Annotate with _XlaCompiledKernel attribute >]
+
+      01 -> 04;
+      04 -> 08;
+      08 -> 09;
+    }
+
+    subgraph cluster_build_xla_launch_ops_pass_cc {
+      label = "tensorflow/compiler/jit/build_xla_launch_ops_pass.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/jit/build_xla_launch_ops_pass.cc";
+
+      05 [label="tensorflow::BuildXlaLaunchOpsPass::Run()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/jit/build_xla_launch_ops_pass.cc#L123"];
+      10 [label=< For nodes with _XlaCompiledKernel attribute<br/>Replace with XlaLaunch op >];
+
+      02 -> 05;
+      05 -> 10;
+    }
+
+  }
+}
