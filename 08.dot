@@ -1,0 +1,59 @@
+digraph 07 {
+  label = "AMDGPUCompiler::Compile() LLVM IR to HSA code object";
+
+  subgraph cluster_xla {
+    label = "XLA";
+
+    subgraph cluster_amdgpu_compuiler_cc {
+      label = "tensorflow/compier/xla/service/gpu/amdgpu_compiler.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/amdgpu_compiler.cc";
+
+      00 [label="xla::gpu::AMDGPUCompiler::Compile()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/amdgpu_compiler.cc#L194"];
+      01 [label="After LLVM IR emission" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/amdgpu_compiler.cc#L257"];
+
+      00 -> 01;
+    }
+
+    subgraph cluster_amdgpu_backend_lib_cc {
+      label = "tensorflow/compier/xla/service/gpu/llvm_gpu_backend/amdgpu_backend_lib.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/llvm_gpu_backend/amdgpu_backend_lib.cc";
+
+      02 [label="xla::gpu::CompileToHsaco()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/llvm_gpu_backend/amdgpu_backend_lib.cc#L460"];
+      03 [label="GPUBackendInit()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/llvm_gpu_backend/amdgpu_backend_lib.cc#L442"];
+      04 [label="InitializePasses()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/llvm_gpu_backend/amdgpu_backend_lib.cc#L105"];
+      05 [label="CompileModuleToHsaco()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/llvm_gpu_backend/amdgpu_backend_lib.cc#L359"];
+      06 [label="LinkROCDLIfNecessary()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/llvm_gpu_backend/amdgpu_backend_lib.cc#L326"];
+      07 [label="CouldNeedROCDL()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/llvm_gpu_backend/amdgpu_backend_lib.cc#L314"];
+      08 [label="GetROCDLFilenames()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/llvm_gpu_backend/amdgpu_backend_lib.cc#L76"];
+      09 [label=< Load ROCDL IR module and link with it with LLVM API >];
+      10 [label="GetTargetMachine()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/llvm_gpu_backend/amdgpu_backend_lib.cc#L121"];
+      100 [label=< Create AMDGPU LLVM backend >];
+      11 [label="AddOptimizationPasses()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/llvm_gpu_backend/amdgpu_backend_lib.cc#L169"];
+      12 [label=< Execute LLVM IR optimization passes >];
+      13 [label="EmitModuleToHsaco()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/llvm_gpu_backend/amdgpu_backend_lib.cc#L210"];
+      14 [label=< Dump LLVM IR >];
+      15 [label=< Emit GCN ISA invokg AMDGPU LLVM backend >];
+      16 [label=< Dump GCN ISA >];
+      17 [label=< Invoke ld.ldd to create HSA code object >];
+
+      01 -> 02;
+      02 -> 03;
+      03 -> 04;
+      02 -> 05;
+      05 -> 06;
+      06 -> 07;
+      06 -> 08;
+      06 -> 09;
+      05 -> 10;
+      10 -> 100;
+      05 -> 11;
+      05 -> 12;
+      05 -> 13;
+      05 -> 14;
+      05 -> 15;
+      05 -> 16;
+      05 -> 17;
+    }
+
+  }
+}
