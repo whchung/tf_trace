@@ -12,3 +12,9 @@
 - 06: how HLO module is optimized
 - 07: how HLO module is lowered into LLVM IR
 - 08: how LLVM IR is lowered to HSA code object
+
+# Build
+
+```
+dot -Tsvg -o svg/foo.svg foo.dot
+```
