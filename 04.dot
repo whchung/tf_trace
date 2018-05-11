@@ -15,8 +15,8 @@ digraph 04 {
     }
 
     subgraph cluster_xla_compilation_cache_cc {
-      label = "tensorflow/compier/jit/kernels/xla_compilation_cache.cc";
-      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/jit/kernels/xla_compilation_cache.cc";
+      label = "tensorflow/compier/jit/xla_compilation_cache.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/jit/xla_compilation_cache.cc";
 
       02 [label="tensorflow::XlaCompilationCache::Compile()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/jit/xla_compilation_cache.cc#L211"];
       03 [label="tensorflow::XlaCompilationCache::BuildSignature()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/jit/xla_compilation_cache.cc#L94"];
@@ -36,8 +36,6 @@ digraph 04 {
       09 [label="tensorflow::XlaCompiler::BuildArguments()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/tf2xla/xla_compiler.cc#L245"];
       10 [label="ExecuteGraph()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/tf2xla/xla_compiler.cc#L195"];
 
-      
-
       11 [label="BuildComputation()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/tf2xla/xla_compiler.cc#L340"];
 
       99 [label="tensorflow::XlaCompiler::BuildExecutable()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/tf2xla/xla_compiler.cc#L161"];
@@ -46,7 +44,7 @@ digraph 04 {
       05 -> 07;
       07 -> 09;
       07 -> 10;
-      10 -> 11;
+      07 -> 11;
 
       02 -> 99;
     }
@@ -75,9 +73,13 @@ digraph 04 {
 
       12 [label="xla::ComputationBuilder::Tuple()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v2/tensorflow/compiler/xla/client/computation_builder.cc#L43"];
       13 [label="xla::ComputationBuilder::PrepareComputation()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v2/tensorflow/compiler/xla/client/computation_builder.cc#L78"];
+      17 [label="xla::ComputationBuilder::GetTupleElement()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v2/tensorflow/compiler/xla/client/computation_builder.cc#L540"];
+      18 [label="xla::ComputationBuilder::Build()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v2/tensorflow/compiler/xla/client/computation_builder.cc#L1640"];
 
       11 -> 12;
       12 -> 13;
+      11 -> 17;
+      11 -> 18;
     }
 
     subgraph cluster_service_cc {
