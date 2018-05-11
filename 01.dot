@@ -96,12 +96,35 @@ digraph 01 {
       13 -> 14;
     }
 
-    // CostModel
+    subgraph cluster_costmodel_cc {
+      label = "tensorflow/core/graph/costmodel.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/graph/costmodel.cc";
 
-    // PRE_PLACEMENT GraphOptimizationPass
+      15 [label="tensorflow::CostModel::InitFromGraph()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/graph/costmodel.cc#L480"];
+      16 [label="tensorflow::CostModel::MergeFromGlobal()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/graph/costmodel.cc#L77"];
 
-    // SimplePlacer
+      14 -> 15;
+      14 -> 16;
+    }
 
-    // POST_PLACEMENT GraphiOptimizationPass
+    subgraph cluster_optimization_registry_cc {
+      label = "tensorflow/core/common_runtime/optimization_registry.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/optimization_registry.cc";
+
+      17 [label="tensorflow::OptimizationPassRegistry::RunGrouping(PRE_PLACEMENT)" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/optimization_registry.cc#L47"];
+      19 [label="tensorflow::OptimizationPassRegistry::RunGrouping(POST_PLACEMENT)" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/optimization_registry.cc#L47"];
+
+      14 -> 17;
+      14 -> 19;
+    }
+ 
+    subgraph cluster_simpler_placer_cc {
+      label = "tensorflow/core/common_runtime/simple_placer.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/simple_placer.cc";
+
+      18 [label="tensorflow::SimplePlacer::Run()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/simple_placer.cc#L652"];
+
+      14 -> 18;
+    }
   }
 }
