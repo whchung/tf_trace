@@ -28,8 +28,191 @@ digraph 07 {
       URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/ir_emitter_unnested.cc";
 
       03 [label="xla::gpu::IrEmitterUnnested::IrEmitterUnnested()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/ir_emitter_unnested.cc#L132"];
+      10 [label="xla::gpu::IrEmitterUnnested::DefaultAction()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/ir_emitter_unnested.cc#L219"];
+      11 [label="xla::gpu::IrEmitterUnnested::BuildKernelThunk()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/ir_emitter_unnested.cc#L1623"];
+      12 [label="xla::gpu::IrEmitterUnnested::EmitBasePointersForHloAndItsOperands()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/ir_emitter_unnested.cc#L1583"];
+      13 [label="xla::gpu::IrEmitterUnnested::BuildKernelPrototype()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/ir_emitter_unnested.cc#L162"];
+      14 [label=< Create LLVM module<br/>Create LLVM function<br/>Set AMDGPU_KERNEL calling convention<br/>Add function attributes<br/>Create entry basic block >];
+      21 [label="xla::gpu::IrEmitterUnnested::Postprocess()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/ir_emitter_unnested.cc#L143"];
+      38 [label="xla::gpu::IrEmitterUnnested::EmitTargetElementLoop()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/ir_emitter_unnested.cc#L1918"];
+      39 [label="xla::gpu::IrEmitterUnnested::EmitTargetElementLoopInThunk()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/ir_emitter_unnested.cc#L1881"];
+      41 [label="xla::gpu::UpdateLaunchDimensions()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/ir_emitter_unnested.cc#L107"];
 
       01 -> 03;
+      09 -> 10;
+      10 -> 11;
+      11 -> 12;
+      12 -> 13;
+      13 -> 14;
+      05 -> 21;
+      24 -> 38;
+      38 -> 39;
+      39 -> 41;
     }
+
+    subgraph cluster_parallel_loop_emitter_cc {
+      label = "tensorflow/compier/xla/service/gpu/parallel_loop_emitter.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/parallel_loop_emitter.cc";
+
+      42 [label="xla::gpu::ParallelLoopEmitter::ParallelLoopEmitter()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/parallel_loop_emitter.cc#L46"];
+      45 [label="xla::gpu::ParallelLoopEmitter::EmitIndexAndSetExitBasicBlock()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/parallel_loop_emitter.cc#L53"];
+      46 [label=< Emit LLVM IR to locate current workitem index >];
+
+      41 -> 42;
+      44 -> 45;
+      45 -> 46;
+    }
+
+    subgraph cluster_loop_emitter_cc {
+      label = "tensorflow/compier/xla/service/llvm_ir/loop_emitter.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/llvm_ir/loop_emitter.cc";
+
+      43 [label="xla::llvm_ir::LoopEmitter::LoopEmitter()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/llvm_ir/loop_emitter.cc#L40"];
+      44 [label="xla::llvm_ir::LoopEmitter::EmitLoop()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/llvm_ir/loop_emitter.cc#L124"];
+      47 [label="xla::llvm_ir::LoopEmitter::body_emitter_" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/llvm_ir/loop_emitter.cc#L43"];
+
+      42 -> 43;
+      39 -> 44;
+      44 -> 47;
+    }
+
+
+    subgraph cluster_partition_assignment_cc {
+      label = "tensorflow/compier/xla/service/gpu/partition_assignment.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/partition_assignment.cc";
+
+      40 [label="xla::gpu::CalculateLaunchDimensions()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/partition_assignment.cc#L46"];
+
+      39 -> 40;
+    }
+       
+    subgraph cluster_ir_emitter_cc {
+      label = "tensorflow/compier/xla/service/gpu/ir_emitter.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/ir_emitter.cc";
+
+      23 [label="xla::gpu::IrEmitter::IrEmitter()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/ir_emitter.cc#L67"];
+      24 [label="xla::gpu::IrEmitter::DefaultAction()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/ir_emitter.cc#L80"];
+
+      03 -> 23;
+      10 -> 24;
+    }
+
+    subgraph cluster_hlo_instruction_cc {
+      label = "tensorflow/compier/xla/service/hlo_instruction.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_instruction.cc";
+
+      04 [label="xla::gpu::HloInstruction::Accept(xla::gpu::IrEmitterUnnested)" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_instruction.cc#L2035"];
+      05 [label="xla::gpu::HloInstruction::PostOrderDFS(xla::gpu::IrEmitterUnnested)" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_instruction.cc#L1976"];
+      07 [label="xla::gpu::HloInstruction::Visit(xla::gpu::IrEmitterUnnested)" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_instruction.cc#L1812"];
+
+      01 -> 04;
+      04 -> 05;
+      05 -> 07;
+    }
+
+    subgraph cluster_dfs_hlo_visitor_with_default_h {
+      label = "tensorflow/compier/xla/service/dfs_hlo_visitor_with_default.h";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/dfs_hlo_visitor_with_default.h";
+      06 [label="xla::gpu::DfsHloVisitorWithDefault::FinishVisit()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/dfs_hlo_visitor_with_default.h#L208"];
+      09 [label="xla::gpu::DfsHloVisitorWithDefault::HandleElementwiseBinary()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/dfs_hlo_visitor_with_default.h#L48"];
+
+      04 -> 06;
+      08 -> 09;
+    }
+
+    subgraph cluster_dfs_hlo_visitor_h {
+      label = "tensorflow/compier/xla/service/dfs_hlo_visitor.h";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/dfs_hlo_visitor.h";
+      08 [label="xla::gpu::DfsHloVisitor::HandleMultiply()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/dfs_hlo_visitor#L90"];
+
+      07 -> 08;
+    }
+
+    subgraph cluster_hlo_to_ir_bindings_cc {
+      label = "tensorflow/compier/xla/service/gpu/hlo_to_ir_bindings.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/hlo_to_ir_bindings.cc";
+      15 [label="xla::gpu::HloToIrBindings::EmitBasePointersForHlos()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/hlo_to_ir_bindings.cc#L31"];
+      16 [label="xla::gpu::HloToIrBindings::BindHloToIrValue()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/hlo_to_ir_bindings.cc#L155"];
+      17 [label="xla::gpu::HloToIrBindings::GetTypedIrValue()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/hlo_to_ir_bindings.cc#L134"];
+      22 [label="xla::gpu::HloToIrBindings::UnbindAllLocalIrValues()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/hlo_to_ir_bindings.cc#L178"];
+      25 [label="xla::gpu::HloToIrBindings::GetIrArray()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/hlo_to_ir_bindings.cc#L170"];
+
+      14 -> 15;
+      15 -> 16;
+      16 -> 17;
+      21 -> 22;
+      24 -> 25;
+    }
+
+    subgraph cluster_llvm_util_cc {
+      label = "tensorflow/compier/xla/service/llvm_ir/llvm_util.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/llvm_ir/llvm_util.cc";
+
+      18 [label="xla::gpu::ShapeToIrType()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/llvm_ir/llvm_util.cc#L125"];
+      19 [label="xla::gpu::PrimitiveTypeToIrType()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/llvm_ir/llvm_util.cc#L95"];
+      20 [label=< Construct LLVM Value >];
+
+      17 -> 18;
+      18 -> 19;
+      18 -> 20;
+    }
+
+    subgraph cluster_ir_array_cc {
+      label = "tensorflow/compier/xla/service/llvm_ir/ir_array.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/llvm_ir/ir_array.cc";
+
+      26 [label="xla::gpu::IrArray::IrArray()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/llvm_ir/ir_array.cc#L75"];
+      28 [label="xla::gpu::IrArray::EmitReadArrayElement()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/llvm_ir/ir_array.cc#L253"];
+      29 [label="xla::gpu::IrArray::EmitArrayElementAddress()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/llvm_ir/ir_array.cc#L209"];
+      30 [label=< Emit array element address >];
+      31 [label=< Emit load instruction >];
+      48 [label="xla::gpu::IrArray::EmitWriteArrayElement()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/llvm_ir/ir_array.cc#L267"];
+      49 [label=< Emit store instruction >];
+
+      25 -> 26;
+      24 -> 28;
+      28 -> 29;
+      29 -> 30;
+      28 -> 31;
+      47 -> 48;
+      48 -> 29;
+      48 -> 49;
+    }
+
+    subgraph cluster_alias_analysis_cc {
+      label = "tensorflow/compier/xla/service/llvm_ir/alias_analysis.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/llvm_ir/alias_analysis.cc";
+
+      27 [label="xla::gpu::AliasAnalysis::AddAliasingInformationToIrArray()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/llvm_ir/alias_analysis.cc#L34"];
+      25 -> 27;
+    }
+ 
+    subgraph cluster_gpu_elemental_ir_emitter_cc {
+      label = "tensorflow/compier/xla/service/gpu/elemental_ir_emitter.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/elemental_ir_emitter.cc";
+
+      32 [label="xla::gpu::GpuElementalIrEmitter::GpuElementalIrEmitter()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/elemental_ir_emitter.cc#L62"];
+      33 [label="xla::gpu::GpuElementalIrEmitter::MakeElementGenerator()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/elemental_ir_emitter.cc#L243"];
+
+      25 -> 32;
+      25 -> 33;
+      47 -> 33;
+    }
+
+    subgraph cluster_elemental_ir_emitter_cc {
+      label = "tensorflow/compier/xla/service/elemental_ir_emitter.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/elemental_ir_emitter.cc";
+
+      34 [label="xla::ElementalIrEmitter::MakeElementGenerator()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/elemental_ir_emitter.cc#L775"];
+      35 [label="xla::ElementalIrEmitter::EmitBinaryOp()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/elemental_ir_emitter.cc#L224"];
+      36 [label="xla::ElementalIrEmitter::EmitFloatBinaryOp()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/elemental_ir_emitter.cc#L234"];
+      37 [label=< Emit fmul LLVM IR >];
+
+      33 -> 34;
+      34 -> 35;
+      35 -> 36;
+      36 -> 37;
+    }
+
   }
 }
