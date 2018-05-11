@@ -1,0 +1,29 @@
+digraph overview_00 {
+  label = "Very simplified TensorRT execution model";
+
+  00 [label = "TensorFlow graph"];
+  003 [label = "TensorRT convert routines"];
+  004 [label = "TensorRT optimized graph"];
+  001 [label = "TensorFlow ops"];
+  002 [label = "TensorFlow devices (CPU/GPU)"];
+  01 [label = "TensorFlow placer"];
+  02 [label = "TensorFlow graph (ops assigned onto devices)"];
+  03 [label = "TensorFlow executor traverses the graph, call op::Compute()"];
+  04 [label = "CPU logic"];
+  05 [label = "Custom CUDA kernels"];
+  06 [label = "cuDNN kernels"];
+  07 [label = "cuBLAS kernels"];
+  08 [label = "Eigen kernels"];
+
+  00 -> 003;
+  003 -> 004;
+  004 -> 01;
+  001 -> 01;
+  002 -> 01;
+  01 -> 02 -> 03;
+  03 -> 04;
+  03 -> 05;
+  03 -> 06;
+  03 -> 07;
+  03 -> 08;
+}
