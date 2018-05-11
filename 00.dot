@@ -23,6 +23,13 @@ digraph 00 {
 
       01 -> 02;
     }
+
+    subgraph cluster_user_model {
+      label = "User model";
+      99 [label="User model"];
+
+      02 -> 99;
+    }
   }
 
   subgraph cluster_generated_python {
@@ -74,7 +81,7 @@ digraph 00 {
       label = "tensorflow/core/common_runtime/device_factory.cc";
       URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/device_factory.cc";
 
-      07 [label=< tensorflow::DeviceFactory::AddDevices()<br/>CPU / GPU enumeration > URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/device_factory.cc#L92"];
+      07 [label=< tensorflow::DeviceFactory::AddDevices()<br/>CPU / GPU / XLA device enumeration > URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/core/common_runtime/device_factory.cc#L92"];
 
       06 -> 07;
     }
