@@ -1,4 +1,4 @@
-digraph 06 {
+digraph 07 {
   label = "AMDGPUCompiler::Compile() LLVM IR part";
 
   subgraph cluster_xla {

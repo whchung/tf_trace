@@ -1,4 +1,4 @@
-digraph 07 {
+digraph 08 {
   label = "AMDGPUCompiler::Compile() LLVM IR to HSA code object";
 
   subgraph cluster_xla {

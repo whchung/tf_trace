@@ -1,8 +1,11 @@
 # TensorFlow source code trace
 
+Overview:
 - overview_00: very simplified TensorFlow execution model
 - overview_01: very simplified TensorFlow XLA execution model
 - overview_02: very simplified TensorRT execution model
+
+Deep dive:
 - 00: what happens when a TF session is created : TF graph is constructed
 - 01: what happens when tf.Session.run() is invoked : XLA ops are registered
 - 02: what happens inside DirectSession::Run() : XLA optimization passes are executed
