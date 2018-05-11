@@ -58,7 +58,7 @@ digraph 07 {
       45 [label="xla::gpu::ParallelLoopEmitter::EmitIndexAndSetExitBasicBlock()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/parallel_loop_emitter.cc#L53"];
       46 [label=< Emit LLVM IR to locate current workitem index >];
 
-      41 -> 42;
+      39 -> 42;
       44 -> 45;
       45 -> 46;
     }
@@ -101,8 +101,8 @@ digraph 07 {
       label = "tensorflow/compier/xla/service/hlo_instruction.cc";
       URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_instruction.cc";
 
-      04 [label="xla::gpu::HloInstruction::Accept(xla::gpu::IrEmitterUnnested)" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_instruction.cc#L2035"];
       05 [label="xla::gpu::HloInstruction::PostOrderDFS(xla::gpu::IrEmitterUnnested)" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_instruction.cc#L1976"];
+      04 [label="xla::gpu::HloInstruction::Accept(xla::gpu::IrEmitterUnnested)" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_instruction.cc#L2035"];
       07 [label="xla::gpu::HloInstruction::Visit(xla::gpu::IrEmitterUnnested)" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_instruction.cc#L1812"];
 
       01 -> 04;
@@ -113,10 +113,8 @@ digraph 07 {
     subgraph cluster_dfs_hlo_visitor_with_default_h {
       label = "tensorflow/compier/xla/service/dfs_hlo_visitor_with_default.h";
       URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/dfs_hlo_visitor_with_default.h";
-      06 [label="xla::gpu::DfsHloVisitorWithDefault::FinishVisit()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/dfs_hlo_visitor_with_default.h#L208"];
       09 [label="xla::gpu::DfsHloVisitorWithDefault::HandleElementwiseBinary()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/dfs_hlo_visitor_with_default.h#L48"];
 
-      04 -> 06;
       08 -> 09;
     }
 
