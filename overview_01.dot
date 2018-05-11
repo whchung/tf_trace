@@ -1,0 +1,45 @@
+digraph overview_00 {
+  label = "Very simplified TensorFlow XLA execution model";
+
+  00 [label = "TensorFlow graph"];
+  001 [label = "TensorFlow ops"];
+  002 [label = "TensorFlow devices (CPU/GPU)"];
+  003 [label = "TensorFlow XLA ops"];
+  004 [label = "TensorFlow XLA execution device"];
+  01 [label = "TensorFlow placer"];
+  02 [label = "TensorFlow graph (XLA-compatible ops placed on XLA execution device)"];
+  005 [label = "TensorFlow XLA Launch op"];
+  03 [label = < TensorFlow XLA graph optimizations<br/>Collapse XLA subgraphs (cluster) with XLA Launch op >];
+  04 [label = "TensorFlow executor traverses the graph, call op::Compute()"];
+  05 [label = "convention execution path"];
+  06 [label = "XLA Launch op"];
+  006 [label = "TensorFlow XLA compilation device"];
+  07 [label = < Traverse XLA cluster<br/>Build XLA UserComputation with XLA compilation device >];
+  08 [label = < TensorFlow XLA op::Compute()/Compile()<br/>Augument XLA UserCompuation >];
+  09 [label = "Traverse XLA UserComputation, build HLO module"];
+  10 [label = "Optimize HLO module"];
+  11 [label = "Emit LLVM IR from HLO module"];
+  12 [label = "Optimize LLVM IR"];
+  13 [label = "Emit HSA code object from LLVM IR"];
+  14 [label = "Load and launch HSA code object"];
+
+  00 -> 01
+  001 -> 01;
+  002 -> 01;
+  003 -> 01;
+  004 -> 01;
+  01 -> 02 -> 03;
+  005 -> 03;
+  03 -> 04;
+  04 -> 05;
+  04 -> 06;
+  006 -> 07;
+  06 -> 07;
+  07 -> 08;
+  07 -> 09;
+  09 -> 10;
+  10 -> 11;
+  11 -> 12;
+  12 -> 13;
+  13 -> 14;
+}
