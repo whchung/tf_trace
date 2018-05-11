@@ -169,7 +169,7 @@ digraph 06 {
       label = "tensorflow/compier/xla/service/gpu/pad_insertion.cc";
       URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/pad_insertion.cc";
 
-      15 [label="xla::HloVerifier::Run()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/pad_insertion.cc#L389"];
+      15 [label="xla::PadInsertion::Run()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/pad_insertion.cc#L389"];
 
       02 -> 15;
     }
