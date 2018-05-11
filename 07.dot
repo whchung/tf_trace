@@ -1,0 +1,35 @@
+digraph 06 {
+  label = "AMDGPUCompiler::Compile() LLVM IR part";
+
+  subgraph cluster_xla {
+    label = "XLA";
+
+    subgraph cluster_amdgpu_compuiler_cc {
+      label = "tensorflow/compier/xla/service/gpu/amdgpu_compiler.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/amdgpu_compiler.cc";
+
+      00 [label="xla::gpu::AMDGPUCompiler::Compile()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/amdgpu_compiler.cc#L194"];
+      01 [label="Start LLVM IR emission" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/amdgpu_compiler.cc#L243"];
+
+      00 -> 01;
+    }
+
+    subgraph cluster_ir_emitter_context_h {
+      label = "tensorflow/compier/xla/service/gpu/ir_emitter_context.h";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/ir_emitter_context.h";
+
+      02 [label="xla::gpu::IrEmitterContext::IrEmitterContext()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/ir_emitter_context.h#L33"];
+
+      01 -> 02;
+    }
+
+    subgraph cluster_ir_emitter_unnested_cc {
+      label = "tensorflow/compier/xla/service/gpu/ir_emitter_unnested.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/ir_emitter_unnested.cc";
+
+      03 [label="xla::gpu::IrEmitterUnnested::IrEmitterUnnested()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/ir_emitter_unnested.cc#L132"];
+
+      01 -> 03;
+    }
+  }
+}
