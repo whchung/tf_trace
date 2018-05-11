@@ -1,0 +1,113 @@
+digraph 05 {
+  label = "XlaCompiler::BuildExecutable";
+
+  subgraph cluster_xla {
+    label = "XLA";
+
+    subgraph cluster_xla_compiler_cc {
+      label = "tensorflow/compier/tf2xla/xla_compiler.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/tf2xla/xla_compiler.cc";
+
+      00 [label="xla::XlaCompiler::BuildExecutable()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/tf2xla/xla_compiler.cc#L161"];
+    }
+
+    subgraph cluster_local_client_cc {
+      label = "tensorflow/compier/xla/client/local_client.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/client/local_client.cc";
+
+      01 [label="xla::LocalClient::Compile()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/client/local_client.cc#L284"];
+
+      00 -> 01;
+    }
+
+    subgraph cluster_local_service_cc {
+      label = "tensorflow/compier/xla/service/local_service.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/local_service.cc";
+
+      02 [label="xla::LocalService::CompileExecutable()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/local_service.cc#L111"];
+
+      01 -> 02;
+    }
+
+    subgraph cluster_service_cc {
+      label = "tensorflow/compier/xla/service/service.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/service.cc";
+
+      03 [label="xla::Service::BuildExecutable()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/service.cc#L402"];
+
+      02 -> 03;
+    }
+
+    subgraph cluster_computation_tracker_cc {
+      label = "tensorflow/compier/xla/service/computation_tracker.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/computation_tracker.cc";
+
+      04 [label="xla::ComputationTracker::BuildHloModule()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/computation_tracker.cc#L169"];
+      05 [label="xla::ComputationTracker::ComputeComputationPostOrder()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/computation_tracker.cc#L147"];
+
+      03 -> 04;
+      04 -> 05;
+    }
+
+    subgraph cluster_user_computation_cc {
+      label = "tensorflow/compier/xla/service/user_computation.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/user_computation.cc";
+
+      06 [label="xla::UserComputation::GetEmbeddedComputations()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/user_computation.cc#L1741"];
+      08 [label="xla::UserComputation::BuildHloComputation()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/user_computation.cc#L2945"];
+      09 [label="ComputationLowerer::Lower()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/user_computation.cc#L2356"];
+      10 [label="ComputationLowerer::Visit()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/user_computation.cc#L2423"];
+
+      05 -> 06;
+      05 -> 08;
+      08 -> 09;
+      09 -> 10;
+    }
+
+    subgraph cluster_hlo_module_cc {
+      label = "tensorflow/compier/xla/service/hlo_module.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_module.cc";
+
+      07 [label="xla::HloModule::HloModule()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_module.cc#L35"];
+      16 [label="xla::HloModule::AddEntryComputation()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_module.cc#L56"];
+      17 [label="xla::HloModule::AddComputationInternal()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_module.cc#L45"];
+
+      05 -> 07;
+      05 -> 16;
+      16 -> 17;
+    }
+
+    subgraph cluster_hlo_instruction_cc {
+      label = "tensorflow/compier/xla/service/hlo_instruction.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_instruction.cc";
+
+      11 [label="xla::HloInstruction::CreateBinary()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_instruction.cc#L143"];
+
+      10 -> 11;
+    }
+
+    subgraph cluster_hlo_computation_cc {
+      label = "tensorflow/compier/xla/service/hlo_computation.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_computation.cc";
+
+      12 [label="xla::HloComputation::Builder::AddInstruction()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_instruction.h#L70"];
+      13 [label="xla::HloComputation::Builder::Build()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_instruction.cc#L47"];
+      14 [label="xla::HloComputation::HloComputation()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_instruction.cc#L64"];
+      15 [label="xla::HloComputation::AddInstructionInternal()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/hlo_instruction.cc#L99"];
+
+      11 -> 12;
+      09 -> 13;
+      13 -> 14;
+      14 -> 15;
+    }
+
+    subgraph cluster_amdgpu_compuiler_cc {
+      label = "tensorflow/compier/xla/service/gpu/amdgpu_compiler.cc";
+      URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/amdgpu_compiler.cc";
+
+      18 [label="xla::gpu::AMDGPUCompiler::Compile()" URL="https://github.com/ROCmSoftwarePlatform/tensorflow/blob/rocm-v1/tensorflow/compiler/xla/service/gpu/amdgpu_compiler.cc#L194"];
+
+      03 -> 18;     
+    }
+  }
+}
