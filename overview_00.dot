@@ -1,0 +1,25 @@
+digraph overview_00 {
+  label = "Very simplified TensorFlow execution model";
+
+  00 [label = "TensorFlow graph"];
+  001 [label = "TensorFlow ops"];
+  002 [label = "TensorFlow devices (CPU/GPU)"];
+  01 [label = "TensorFlow placer"];
+  02 [label = "TensorFlow graph (ops assigned onto devices)"];
+  03 [label = "TensorFlow executor traverses the graph, call op::Compute()"];
+  04 [label = "CPU logic"];
+  05 [label = "Custom CUDA/HIP kernels"];
+  06 [label = "MIOpen kernels"];
+  07 [label = "rocBLAS kernels"];
+  08 [label = "Eigen kernels"];
+
+  00 -> 01
+  001 -> 01;
+  002 -> 01;
+  01 -> 02 -> 03;
+  03 -> 04;
+  03 -> 05;
+  03 -> 06;
+  03 -> 07;
+  03 -> 08;
+}
